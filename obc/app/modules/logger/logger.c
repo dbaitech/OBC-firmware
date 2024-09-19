@@ -147,8 +147,10 @@ void obcTaskFunctionLogger(void *pvParameters) {
     if (strcmp(spamDetector.errorMessage, logBuf) == 0) {
       if (difftime(currentTime, spamDetector.lastLogged) <= SPAM_TIMEFRAME) {
         spamDetector.count++;
-        if (spamDetector.count == MAX_REPEATED_MESSAGES) {
-          LOG_ERROR_CODE(OBC_ERR_CODE_SPAM_DETECTED);
+        if (spamDetector.count >= MAX_REPEATED_MESSAGES) {
+          if (spamDetector.count == MAX_REPEATED_MESSAGES) {
+            LOG_ERROR_CODE(OBC_ERR_CODE_SPAM_DETECTED);
+          }
           continue;
         }
       } else {
